@@ -74,9 +74,6 @@ def search(df,k, query,vocabulary, tfidf,tfidf_transform):
     for i,index in enumerate(out):
         a.loc[i, 'index'] = str(index)
         a.loc[i, 'Title'] = df['title'][index]
-    for j,simScore in enumerate(d_cosines[-k:][::-1]):
-        a.loc[j,'Score'] = simScore
-
     return a
 
 
@@ -84,7 +81,6 @@ if __name__ == "__main__":
     df = pd.read_json('./teste.json')
     df['body'] = df['body'].apply(clean_stopwords).apply(stemming).apply(remove_alpha)
     df["tokenize"] = [','.join((word_tokenize(entry))) for entry in df.body]
-    
     
     list_english = set()
     for i in df.tokenize:
@@ -96,9 +92,9 @@ if __name__ == "__main__":
     tfidf.fit(df.tokenize)
     tfidf_transform  = tfidf.transform(df.tokenize)
     
-    a = search(df,10, "Brazil",list_english,tfidf, tfidf_transform)
+    a = search(df,10, "Brazil JP Morgan",list_english,tfidf, tfidf_transform)
     print(a)
-    
+
 
 
     
